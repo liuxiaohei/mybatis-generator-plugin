@@ -32,7 +32,7 @@
 
 同时添加配置文件`generatorConfig.xml`,使用的时候请根据项目需要自行修改对应配置
 
-maven clean install
+mvn clean install
 
 ```xml
 
@@ -99,10 +99,11 @@ maven clean install
 
 	</context>
 </generatorConfiguration>
-
-
 ```
 
-## Author
-- GuoGuiRong 你的孤独 虽败犹荣
+参照 https://www.jianshu.com/p/7f57be69bb94
+    https://gitee.com/whan0216/mybatis-generator-plugin
+    
+
+
 
