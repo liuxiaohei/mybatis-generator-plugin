@@ -34,6 +34,7 @@ final public class MBGenerator {
         public final static FullyQualifiedJavaType OBJECT = FullyQualifiedJavaType.getObjectInstance();
         public final static FullyQualifiedJavaType CRITERIA  = FullyQualifiedJavaType.getCriteriaInstance();
         public final static FullyQualifiedJavaType INT = FullyQualifiedJavaType.getIntInstance();
+        public final static FullyQualifiedJavaType LONG = PrimitiveTypeWrapper.getLongInstance();
         public final static FullyQualifiedJavaType INTEGER = PrimitiveTypeWrapper.getIntegerInstance();
         public final static FullyQualifiedJavaType VOID = null;
 

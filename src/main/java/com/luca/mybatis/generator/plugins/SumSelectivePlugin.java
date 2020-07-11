@@ -48,7 +48,7 @@ public class SumSelectivePlugin extends PluginAdapter {
         List<IntrospectedColumn> columns = introspectedTable.getAllColumns();
         for (IntrospectedColumn column : columns) {
             String field = column.getJavaProperty();
-            String mn = "sum" + field.substring(0, 1).toUpperCase() + field.substring(1, field.length());
+            String mn = "sum" + field.substring(0, 1).toUpperCase() + field.substring(1);
             Method method = new Method();
             method.setName(mn);
             method.setVisibility(JavaVisibility.PUBLIC);

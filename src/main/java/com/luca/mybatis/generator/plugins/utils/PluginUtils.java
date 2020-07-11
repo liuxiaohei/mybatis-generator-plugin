@@ -15,7 +15,7 @@ public abstract class PluginUtils {
     public static void addProperty(String field, FullyQualifiedJavaType fieldType, TopLevelClass topLevelClass, Context context, String tableName) {
         for (Method method : topLevelClass.getMethods()) {
             if (method.getName().equals("clear")) {
-                method.addBodyLine("this." + field + " = null;");
+                method.addBodyLine(0,"this." + field + " = null;");
             }
         }
         topLevelClass.addField(makeStringField(context, field, fieldType, tableName));

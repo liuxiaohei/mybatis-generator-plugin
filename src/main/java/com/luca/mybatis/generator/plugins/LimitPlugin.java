@@ -141,8 +141,12 @@ public class LimitPlugin extends PluginAdapter {
         List<Method> methodList = topLevelClass.getMethods();
         for (Method method : methodList) {
             if (method.getName().equals("clear")) {
-                method.addBodyLine("rows = null;");
-                method.addBodyLine("offset = null;");
+                int index = method.getBodyLines().size() - 2;
+                if (index <= 0) {
+                    index = 0;
+                }
+                method.addBodyLine(0, "rows = null;");
+                method.addBodyLine(0, "offset = null;");
                 logger.debug("chrm(MySQL分页插件):" + topLevelClass.getType().getShortName() + "修改clear方法,增加rows和offset字段的清空");
             }
         }

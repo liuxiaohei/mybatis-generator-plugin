@@ -32,6 +32,7 @@ public class LombokPlugin extends PluginAdapter {
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         addAnnotations(topLevelClass);
+        addAnnotation(topLevelClass,Annotations.BUILDER);
         return true;
     }
 
@@ -41,6 +42,7 @@ public class LombokPlugin extends PluginAdapter {
     @Override
     public boolean modelPrimaryKeyClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         addAnnotations(topLevelClass);
+        addAnnotation(topLevelClass,Annotations.BUILDER );
         return true;
     }
 
@@ -51,6 +53,7 @@ public class LombokPlugin extends PluginAdapter {
     public boolean modelRecordWithBLOBsClassGenerated(TopLevelClass topLevelClass,
                                                       IntrospectedTable introspectedTable) {
         addAnnotations(topLevelClass);
+        addAnnotation(topLevelClass,Annotations.EQUALS_AND_HASHCODE);
         return true;
     }
 
@@ -94,13 +97,18 @@ public class LombokPlugin extends PluginAdapter {
         }
     }
 
+    private void addAnnotation(TopLevelClass topLevelClass, Annotations annotation) {
+        topLevelClass.addImportedType(annotation.javaType);
+        topLevelClass.addAnnotation(annotation.asAnnotation());
+    }
+
     @Override
     public void setProperties(Properties properties) {
         super.setProperties(properties);
 
         //@Data,@Builder,@NoArgsConstructor,@AllArgsConstructor is default annotation
-        annotations.add(Annotations.DATA);
-        annotations.add(Annotations.BUILDER);
+//        annotations.add(Annotations.DATA);
+//        annotations.add(Annotations.BUILDER);
         annotations.add(Annotations.NO_ARGS_CONSTRUCTOR);
         annotations.add(Annotations.ALL_ARGS_CONSTRUCTOR);
 
@@ -132,6 +140,7 @@ public class LombokPlugin extends PluginAdapter {
     }
 
     private enum Annotations {
+        EQUALS_AND_HASHCODE("equalsAndHashCode","@EqualsAndHashCode(callSuper = true)","lombok.EqualsAndHashCode"),
         DATA("data", "@Data", "lombok.Data"),
         BUILDER("builder", "@Builder", "lombok.Builder"),
         ALL_ARGS_CONSTRUCTOR("allArgsConstructor", "@AllArgsConstructor", "lombok.AllArgsConstructor"),

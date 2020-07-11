@@ -263,11 +263,11 @@ public class AddCriteriaActionsPlugin extends PluginAdapter {
     private void addCountMethods(TopLevelClass topLevelClass, IntrospectedTable introspectedTable, MyBatisClasses cls) {
         if (!countMethod.startsWith(SKIP) && introspectedTable.getRules().generateCountByExample()) {
             topLevelClass.addMethod(method(
-                PUBLIC, INT, countMethod, param(sqlSession, "sql"), body(
+                PUBLIC, LONG, countMethod, param(sqlSession, "sql"), body(
                     "return sql.getMapper(" + cls.names.mapper + ".class).countByExample(this);"
             )));
             topLevelClass.addMethod(method(
-                PUBLIC, INT, countMethod, param(cls.types.mapper, "mapper"), body(
+                PUBLIC, LONG, countMethod, param(cls.types.mapper, "mapper"), body(
                     "return mapper.countByExample(this);"
             )));
         }
