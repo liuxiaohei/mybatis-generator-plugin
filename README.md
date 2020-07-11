@@ -103,6 +103,8 @@ mvn clean install
 
 参照 https://www.jianshu.com/p/7f57be69bb94
     https://gitee.com/whan0216/mybatis-generator-plugin
+    https://github.com/oceanc/mybatis3-generator-plugins
+    https://github.com/vsl1978/mybatis-generator-pluginsplus
     
 
 
