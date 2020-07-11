@@ -165,14 +165,13 @@ public class CommentPlugin extends PluginAdapter {
 
     private void removeAttribute(List<Attribute> as, String name) {
         if (!as.isEmpty()) {
-            Iterator it = as.iterator();
-
+            Iterator<Attribute> it = as.iterator();
             Attribute attr;
             do {
                 if (!it.hasNext()) {
                     return;
                 }
-                attr = (Attribute)it.next();
+                attr = it.next();
             } while(!attr.getName().equalsIgnoreCase(name));
 
             it.remove();

@@ -18,6 +18,7 @@ import static com.luca.mybatis.generator.plugins.el.MBGenerator.FQJT.*;
 /**
  * List<Integer> list = Foo.distinctBarId(fooList);
  */
+@Deprecated
 public class DistinctPlugin extends IntrospectorPlugin {
     private final static String SKIP    = "-";
     private final static String DEFAULT_DISTINCT_VARCHAR_COLUMNS  = "(?i)(.*[^A-Za-z]|^)(uid|name|src|code)([^A-Za-z].*|$)";

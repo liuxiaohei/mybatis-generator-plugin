@@ -71,11 +71,7 @@ public abstract class IntrospectorPlugin extends PluginAdapter {
             Method m = Context.class.getDeclaredMethod("getConnection");
             m.setAccessible(true);
             return (Connection)m.invoke(context);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;

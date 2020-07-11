@@ -63,8 +63,8 @@ public class AnyCriteriaPlugin extends PluginAdapter {
 
     @Override
     public boolean sqlMapExampleWhereClauseElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        if (!andIf(element, introspectedTable)) return false;
-        return !addRightIf || andRightIf(element, introspectedTable);
+        if (!andIf(element)) return false;
+        return !addRightIf || andRightIf(element);
     }
 
 
@@ -165,7 +165,7 @@ public class AnyCriteriaPlugin extends PluginAdapter {
     }
 
     private void andIn(InnerClass generatedCriteria, TopLevelClass topLevelClass) {
-        List<Method> newMethods = new ArrayList<Method>();
+        List<Method> newMethods = new ArrayList<>();
         boolean toInteger = false;
         boolean toLong = false;
         for (Method m : generatedCriteria.getMethods()) {
@@ -247,7 +247,7 @@ public class AnyCriteriaPlugin extends PluginAdapter {
         m.setVisibility(base.getVisibility());
 
         Parameter param = base.getParameters().get(0);
-        FullyQualifiedJavaType type = null;
+        FullyQualifiedJavaType type;
         if (typeName == null) {
             if (componentTypeName == null) return false;
             type = new JavaArray(componentTypeName);
@@ -367,7 +367,7 @@ public class AnyCriteriaPlugin extends PluginAdapter {
         }
     }
 
-    public boolean andIf(XmlElement element, IntrospectedTable introspectedTable) {
+    public boolean andIf(XmlElement element) {
         return traverse(element, new ReplaceText(
             new ConTextReplacer(
                 "#\\{([^\\}]+?)\\.value(?:,[^\\}]+)*\\}",
@@ -377,7 +377,7 @@ public class AnyCriteriaPlugin extends PluginAdapter {
         )) > 0;
     }
 
-    public boolean andRightIf(XmlElement element, IntrospectedTable introspectedTable) {
+    public boolean andRightIf(XmlElement element) {
         return traverse(element, new MBGenerator.FindElements() {
             @Override
             public boolean process(XmlElement parent, Element self, int position) {

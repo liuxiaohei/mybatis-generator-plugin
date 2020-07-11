@@ -58,11 +58,10 @@ public class ServicePlugin extends PluginAdapter {
         topLevelClass.addImportedType(new FullyQualifiedJavaType("org.springframework.stereotype.Service"));
         topLevelClass.addImportedType(new FullyQualifiedJavaType("org.springframework.beans.factory.annotation" +
                 ".Autowired"));
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("cn.mwee.service.base_framework.mysql.service" +
-                ".BaseService"));
+//        topLevelClass.addImportedType(new FullyQualifiedJavaType("cn.mwee.service.base_framework.mysql.service" + ".BaseService"));
         topLevelClass.addAnnotation("@Service(\"" + firstLetterLowerCase(domainObjectName + "Service") + "\")");
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);
-        topLevelClass.setSuperClass(new FullyQualifiedJavaType("BaseService<" + entityType.getShortName() + ">"));
+//        topLevelClass.setSuperClass(new FullyQualifiedJavaType("BaseService<" + entityType.getShortName() + ">"));
         setMapperField(introspectedTable, topLevelClass);
 //        ElementUtil.addAuthorTag(topLevelClass);
         return Collections.singletonList(new GeneratedJavaFile(topLevelClass, targetProject, new DefaultJavaFormatter()));

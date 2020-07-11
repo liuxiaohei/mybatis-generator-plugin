@@ -107,7 +107,7 @@ public class LombokPlugin extends PluginAdapter {
         super.setProperties(properties);
 
         //@Data,@Builder,@NoArgsConstructor,@AllArgsConstructor is default annotation
-//        annotations.add(Annotations.DATA);
+        annotations.add(Annotations.DATA);
 //        annotations.add(Annotations.BUILDER);
         annotations.add(Annotations.NO_ARGS_CONSTRUCTOR);
         annotations.add(Annotations.ALL_ARGS_CONSTRUCTOR);

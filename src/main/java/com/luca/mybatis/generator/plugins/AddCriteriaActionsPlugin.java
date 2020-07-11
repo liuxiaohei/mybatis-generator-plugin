@@ -89,7 +89,7 @@ public class AddCriteriaActionsPlugin extends PluginAdapter {
         addDeleteMethods(topLevelClass, introspectedTable, cls);
         addCountMethods(topLevelClass, introspectedTable, cls);
         if (mapperClass != null) {
-            addUserDefinedMethods(topLevelClass, mapperClass, introspectedTable, cls);
+            addUserDefinedMethods(topLevelClass, mapperClass, cls);
             mapperClass = null;
             exampleClass = null;
         } else {
@@ -108,7 +108,7 @@ public class AddCriteriaActionsPlugin extends PluginAdapter {
         if (exampleClass != null) {
             MyBatisClasses cls = MyBatisClasses.calculate(exampleClass, introspectedTable);
             int newMethodsStart = exampleClass.getMethods().size();
-            addUserDefinedMethods(exampleClass, interfaze, introspectedTable, cls);
+            addUserDefinedMethods(exampleClass, interfaze, cls);
             addCriteriaMethods(exampleClass, newMethodsStart);
             exampleClass = null;
             mapperClass = null;
@@ -235,7 +235,8 @@ public class AddCriteriaActionsPlugin extends PluginAdapter {
                 record = cls.names.blob;
                 topLevelClass.addImportedType(cls.imports.blob);
             }
-            mapperMethod = selective ? "updateByExampleSelectiveWithBLOBs" /* not supported */ : "updateByExampleWithBLOBs";
+            /* not supported */
+            mapperMethod = "updateByExampleWithBLOBs";
             topLevelClass.addMethod(method(
                 PUBLIC, INT, withBLOBs, param(sqlSession, "sql"), param(new FullyQualifiedJavaType(record), "record"), body(
                     "return sql.getMapper(" + cls.names.mapper + ".class)."+mapperMethod+"(record, this);"
@@ -273,11 +274,11 @@ public class AddCriteriaActionsPlugin extends PluginAdapter {
         }
     }
 
-    private void addUserDefinedMethods(TopLevelClass exampleClass, Interface mapperClass, IntrospectedTable introspectedTable, MyBatisClasses cls) {
+    private void addUserDefinedMethods(TopLevelClass exampleClass, Interface mapperClass, MyBatisClasses cls) {
         for (Method action : mapperClass.getMethods()) {
             if (!userDefinedMethods.matcher(action.getName()).matches()) continue;
             StringBuilder args = new StringBuilder();
-            List<Parameter> params = new ArrayList<Parameter>();
+            List<Parameter> params = new ArrayList<>();
             boolean example = false;
             if (action.getParameters() != null)
                 for (Parameter param : action.getParameters()) {
@@ -299,11 +300,11 @@ public class AddCriteriaActionsPlugin extends PluginAdapter {
             }
 
             exampleClass.addMethod(method(
-                PUBLIC, INT, action.getName(), param(sqlSession, "sql"), params.toArray(new Parameter[params.size()]), body(
+                PUBLIC, INT, action.getName(), param(sqlSession, "sql"), params.toArray(new Parameter[0]), body(
                     "return sql.getMapper(" + cls.names.mapper + ".class)."+action.getName()+"("+args+");"
             )));
             exampleClass.addMethod(method(
-                PUBLIC, INT, action.getName(), param(cls.types.mapper, "mapper"), params.toArray(new Parameter[params.size()]), body(
+                PUBLIC, INT, action.getName(), param(cls.types.mapper, "mapper"), params.toArray(new Parameter[0]), body(
                     "return mapper."+action.getName()+"("+args+");"
             )));
         }

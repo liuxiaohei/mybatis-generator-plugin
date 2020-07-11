@@ -11,6 +11,7 @@ import org.mybatis.generator.config.PropertyRegistry;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,8 +27,8 @@ public class BooleanTypePlugin extends PluginAdapter {
     private int defaultTrueInt;
     private int defaultFalseInt;
 
-    private List<GeneratedJavaFile> javaFiles = new ArrayList<GeneratedJavaFile>();
-    private Set<String> handlers = new HashSet<String>();
+    private final List<GeneratedJavaFile> javaFiles = new ArrayList<>();
+    private final Set<String> handlers = new HashSet<>();
 
     @Override
     public boolean validate(List<String> warnings) {
@@ -75,7 +76,7 @@ public class BooleanTypePlugin extends PluginAdapter {
     private final static Pattern COLUMN = Pattern.compile("^\\s*+(.+?)\\s*+(?:\\(\\s*+(.+?)\\s*+/\\s*+(.+?)\\s*+\\))?\\s*$");
 
     private List<BooleanColumn<?>> enumerateColumns(IntrospectedTable introspectedTable) {
-        List<BooleanColumn<?>> list = new ArrayList<BooleanColumn<?>>();
+        List<BooleanColumn<?>> list = new ArrayList<>();
         String columns = com.luca.mybatis.generator.plugins.el.Objects.nvl(Str.trim(introspectedTable.getTableConfigurationProperty("boolean-integer-columns")), "");
         for (StringTokenizer st = new StringTokenizer(columns, ",;", false); st.hasMoreTokens(); ) {
             String columnDefinition = st.nextToken();
@@ -232,7 +233,7 @@ public class BooleanTypePlugin extends PluginAdapter {
     private static String toCodes(String s) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-            String h = Integer.toHexString((int) s.charAt(i));
+            String h = Integer.toHexString(s.charAt(i));
             if (h.length() < 4) sb.append("0000".substring(h.length()));
             sb.append(h);
         }
@@ -241,7 +242,7 @@ public class BooleanTypePlugin extends PluginAdapter {
 
     private static class Template implements CompilationUnit {
         private String content;
-        private FullyQualifiedJavaType type;
+        private final FullyQualifiedJavaType type;
 
         public Template(String resource, String pkg, String className, StringMacro macro) {
             String uri = "/"+getClass().getPackage().getName().replace('.', '/')+"/"+resource;
@@ -253,7 +254,7 @@ public class BooleanTypePlugin extends PluginAdapter {
                     for (int count; (count = is.read(buf)) >= 0; ) os.write(buf, 0, count);
                     is.close();
                     macro.text("${PACKAGE}", pkg).text("${CLASS_NAME}", className);
-                    this.content = macro.replaceAll(new String(os.toByteArray(), "UTF-8"));
+                    this.content = macro.replaceAll(new String(os.toByteArray(), StandardCharsets.UTF_8));
                 } catch (IOException e) {
                     System.err.println("Failed to load "+uri);
                     e.printStackTrace();

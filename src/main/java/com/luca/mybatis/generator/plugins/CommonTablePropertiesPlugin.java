@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class CommonTablePropertiesPlugin extends PluginAdapter {
 
-    private Map<String, Set<String>> modified = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> modified = new HashMap<>();
 
     @Override
     public boolean validate(List<String> strings) {
@@ -28,9 +28,7 @@ public class CommonTablePropertiesPlugin extends PluginAdapter {
             String tableName = tc.getTableName();
             if (!include.matcher(tableName).matches() || exclude.matcher(tableName).matches())
                 continue;
-            Set<String> set = modified.get(tableName);
-            if (set == null)
-                modified.put(tableName, set = new HashSet<String>());
+            Set<String> set = modified.computeIfAbsent(tableName, k -> new HashSet<>());
             Properties p = tc.getProperties();
             for (Enumeration<?> e = properties.propertyNames(); e.hasMoreElements(); ) {
                 String name = (String)e.nextElement();
@@ -65,8 +63,8 @@ public class CommonTablePropertiesPlugin extends PluginAdapter {
         Set<String> set = this.modified.get(introspectedTable.getTableConfiguration().getTableName());
         if (set == null || set.isEmpty())
             return;
-        boolean modified = false;
-        modified = processIgnoreQualifiersAtRuntime(introspectedTable) || modified;
+        boolean modified;
+        modified = processIgnoreQualifiersAtRuntime(introspectedTable);
         modified = processRuntimeCatalog(introspectedTable) || modified;
         modified = processRuntimeSchema(introspectedTable) || modified;
         modified = processAlias(introspectedTable) || modified;
@@ -96,7 +94,7 @@ public class CommonTablePropertiesPlugin extends PluginAdapter {
         try {
             Boolean b = (Boolean)ignoreQualifiersAtRuntime.get(introspectedTable.getFullyQualifiedTable());
             boolean property = Bool.bool(introspectedTable.getTableConfigurationProperty("ignoreQualifiersAtRuntime"), false);
-            if (b.booleanValue() == property)
+            if (b == property)
                 return false;
             ignoreQualifiersAtRuntime.set(t, property);
             return true;

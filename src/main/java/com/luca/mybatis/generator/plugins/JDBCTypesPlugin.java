@@ -23,8 +23,8 @@ import java.util.regex.Pattern;
 public class JDBCTypesPlugin extends IntrospectorPlugin {
     private boolean verbose;
     private boolean introspect;
-    private List<Pair<Type, Type>> convert = new ArrayList<Pair<Type, Type>>();
-    private Map<String, Map<String, ColumnInfo>> columnInfo = new HashMap<String, Map<String, ColumnInfo>>();
+    private final List<Pair<Type, Type>> convert = new ArrayList<Pair<Type, Type>>();
+    private final Map<String, Map<String, ColumnInfo>> columnInfo = new HashMap<String, Map<String, ColumnInfo>>();
 
     private Pattern include;
     private Pattern exclude;
@@ -72,8 +72,8 @@ public class JDBCTypesPlugin extends IntrospectorPlugin {
         String javaType;
         String typeHandler;
 
-        private static Pattern SIMPLE = Pattern.compile("^[^\\(]+$");
-        private static Pattern WITH_LEN = Pattern.compile("^([^(]+?)\\s*\\(([^,]+)(?:,([^,)]+))?\\)$");
+        private static final Pattern SIMPLE = Pattern.compile("^[^\\(]+$");
+        private static final Pattern WITH_LEN = Pattern.compile("^([^(]+?)\\s*\\(([^,]+)(?:,([^,)]+))?\\)$");
         public static Type parse(String s) {
             s = Str.trim(s);
             if (s == null) return null;
@@ -275,8 +275,8 @@ public class JDBCTypesPlugin extends IntrospectorPlugin {
         }
     }
 
-    private static Map<String, Integer> typeToId = new HashMap<String, Integer>();
-    private static Map<Integer, String> idToType  = new HashMap<Integer, String>();
+    private static final Map<String, Integer> typeToId = new HashMap<>();
+    private static final Map<Integer, String> idToType  = new HashMap<>();
 
     static {
         Field[] constants = java.sql.Types.class.getFields();
