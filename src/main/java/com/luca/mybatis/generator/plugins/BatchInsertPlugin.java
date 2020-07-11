@@ -1,28 +1,15 @@
 package com.luca.mybatis.generator.plugins;
 
-import com.luca.mybatis.generator.plugins.utils.CommTools;
-import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.*;
-import org.mybatis.generator.codegen.mybatis3.ListUtilities;
-import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.PluginConfiguration;
-import org.mybatis.generator.internal.util.StringUtility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 批量插入插件
- */
-/**
- * Created by chengyang
  */
 public class BatchInsertPlugin extends PluginAdapter {
 

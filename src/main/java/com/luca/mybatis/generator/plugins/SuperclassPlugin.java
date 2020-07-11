@@ -60,7 +60,7 @@ public class SuperclassPlugin extends IntrospectorPlugin {
     }
 
     private static class ClassNameTemplate {
-        private String name;
+        private final String name;
         private FullyQualifiedJavaType type;
         private IntrospectedTable table;
 

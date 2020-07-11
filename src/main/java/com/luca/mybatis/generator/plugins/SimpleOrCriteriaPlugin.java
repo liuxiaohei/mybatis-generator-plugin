@@ -64,7 +64,6 @@ public class SimpleOrCriteriaPlugin extends PluginAdapter {
 
     private void modifyCriteria(InnerClass criteria, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         criteria.addField(field(PRIVATE, criteria.getType(), "_parent"));
-
         criteria.addMethod(method(
             PUBLIC, CRITERIA, "andOr", body(
                 "Criteria c = _owner.createCriteriaInternal();",
@@ -72,19 +71,16 @@ public class SimpleOrCriteriaPlugin extends PluginAdapter {
                 "criteria.add(new Criterion(c));",
                 "return c;"
         )));
-
         criteria.addMethod(method(PUBLIC, CRITERIA, "endOr", body("return _parent != null ? _parent : this;")));
     }
 
     private void modifyCriterion(InnerClass criterion, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         criterion.addField(field(PRIVATE, CRITERIA, "sub"));
-
         criterion.addMethod(constructor(
             PROTECTED, "Criterion", param(CRITERIA, "sub"), body(
                 "super();",
                 "this.sub = sub;"
         )));
-
         criterion.addMethod(method(
             PUBLIC, new FullyQualifiedJavaType("Criteria"), "getSubCriteria", body(
                 "return sub;"
