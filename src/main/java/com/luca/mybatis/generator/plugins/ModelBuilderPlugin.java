@@ -30,6 +30,7 @@ import java.util.List;
 /**
  * 增加Model Builder方法
  */
+@Deprecated
 public class ModelBuilderPlugin extends PluginAdapter {
     public static final String BUILDER_CLASS_NAME = "Builder";  // Builder 类名
     private static final Logger logger = LoggerFactory.getLogger(ModelBuilderPlugin.class);
