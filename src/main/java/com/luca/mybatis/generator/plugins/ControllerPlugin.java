@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * 主要是为了便于自动生成 Service 类
- * 链接：https://www.imooc.com/article/details/id/293806
+ * 参照Servce 也自动生成一个Controller
  */
-public class ServicePlugin extends PluginAdapter {
+public class ControllerPlugin extends PluginAdapter {
 
     private String targetProject;
     private String targetPackage;
@@ -51,18 +50,15 @@ public class ServicePlugin extends PluginAdapter {
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType entityType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         String domainObjectName = introspectedTable.getFullyQualifiedTable().getDomainObjectName();
-        String service = targetPackage + "." + domainObjectName + "Service";
-        TopLevelClass topLevelClass = new TopLevelClass(new FullyQualifiedJavaType(service));
+        String controller = targetPackage + "." + domainObjectName + "Controller";
+        TopLevelClass topLevelClass = new TopLevelClass(new FullyQualifiedJavaType(controller));
 //        topLevelClass.addImportedType(entityType);
-        topLevelClass.addImportedType(new FullyQualifiedJavaType(service));
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.springframework.stereotype.Service"));
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("javax.annotation.Resource"));
-//        topLevelClass.addImportedType(new FullyQualifiedJavaType("cn.mwee.service.base_framework.mysql.service" + ".BaseService"));
-        topLevelClass.addAnnotation("@Service(\"" + firstLetterLowerCase(domainObjectName + "Service") + "\")");
+        topLevelClass.addImportedType(new FullyQualifiedJavaType(controller));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RestController"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"));
+        topLevelClass.addAnnotation("@RestController(\"" + firstLetterLowerCase(domainObjectName + "Controller") + "\")");
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);
-//        topLevelClass.setSuperClass(new FullyQualifiedJavaType("BaseService<" + entityType.getShortName() + ">"));
         setMapperField(introspectedTable, topLevelClass);
-//        ElementUtil.addAuthorTag(topLevelClass);
         return Collections.singletonList(new GeneratedJavaFile(topLevelClass, targetProject, new DefaultJavaFormatter()));
     }
 
@@ -70,19 +66,19 @@ public class ServicePlugin extends PluginAdapter {
         // 实体类的类名
         String domainObjectName = introspectedTable.getFullyQualifiedTable().getDomainObjectName();
         // Mapper类所在包的包名
-        String mapperPackage = introspectedTable.getContext().getJavaClientGeneratorConfiguration().getTargetPackage();
-        Field mapperField = new Field();
+        String servicePackage = introspectedTable.getContext().getJavaClientGeneratorConfiguration().getTargetPackage().replace("mapper","service");
+        Field serviceField = new Field();
         // 设置Field的注解
-        mapperField.addAnnotation("@Resource");
-        mapperField.setVisibility(JavaVisibility.PRIVATE);
+        serviceField.addAnnotation("@Autowired");
+        serviceField.setVisibility(JavaVisibility.PRIVATE);
         // 设置Field的类型
-        mapperField.setType(new FullyQualifiedJavaType(domainObjectName + "Mapper"));
+        serviceField.setType(new FullyQualifiedJavaType(domainObjectName + "Service"));
         // 设置Field的名称
-        mapperField.setName(firstLetterLowerCase(domainObjectName) + "Mapper");
+        serviceField.setName(firstLetterLowerCase(domainObjectName) + "Service");
         // 将Field添加到对应的类中
-        clazz.addField(mapperField);
+        clazz.addField(serviceField);
         // 对应的类需要import Mapper类(使用全限定类名)
-        clazz.addImportedType(new FullyQualifiedJavaType(mapperPackage + "." + domainObjectName + "Mapper"));
+        clazz.addImportedType(new FullyQualifiedJavaType(servicePackage + "." + domainObjectName + "Service"));
     }
 
     private String firstLetterLowerCase(String name) {
