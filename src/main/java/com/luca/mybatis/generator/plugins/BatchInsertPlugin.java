@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.luca.mybatis.generator.plugins;
 
 import com.luca.mybatis.generator.plugins.utils.CommTools;
@@ -219,7 +203,6 @@ public class BatchInsertPlugin extends PluginAdapter {
         foreachValues.addAttribute(new Attribute("collection", "list"));
         foreachValues.addAttribute(new Attribute("item", "item"));
         foreachValues.addAttribute(new Attribute("separator", ","));
-
         foreachValues.addElement(new TextElement("("));
 
         // foreach 所有插入的列，比较是否存在
@@ -235,13 +218,10 @@ public class BatchInsertPlugin extends PluginAdapter {
             XmlElement check = new XmlElement("if");
             check.addAttribute(new Attribute("test", "'" + introspectedColumn.getActualColumnName() + "' == column.value"));
             check.addElement(new TextElement(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "item.")));
-
             foreachInsertColumnsCheck.addElement(check);
         }
         foreachValues.addElement(foreachInsertColumnsCheck);
-
         foreachValues.addElement(new TextElement(")"));
-
         element.addElement(foreachValues);
 
         if (context.getPlugins().sqlMapInsertElementGenerated(element, introspectedTable)) {
